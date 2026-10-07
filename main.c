@@ -96,6 +96,9 @@ int main(int argc, char* argv[]) {
 
   difusao_inversa(in.height, in.width, pin, pout);
 
+  stbi_write_png("semdifusao.png",
+                 in.width, in.height, 3, pout, 0);
+
   confusao_inversa(in.height, in.width, pout, pin);
 
   stbi_write_png("recuperada.png",
