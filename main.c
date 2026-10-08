@@ -172,7 +172,7 @@ void difusao_inversa(int altura, int largura, Pixel pout[altura][largura],
       else if(j % 2 == 1 && i % 2 == 0){
         pin[i][j] = pout[altura - i][j];
       }
-      else{//Se a altura é ímpar e a largura é par, não inverte
+      else{
         pin[i][j] = pout[i][j];
       }
     }
