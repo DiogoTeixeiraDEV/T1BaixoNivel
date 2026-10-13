@@ -48,14 +48,10 @@ Img in, out;
 
 // Protótipos
 void load(char* name, Img* pic);
-void confusao(int altura, int largura, Pixel pin[altura][largura],
-             Pixel pout[altura][largura]);
-void confusao_inversa(int altura, int largura, Pixel pout[altura][largura],
-                      Pixel pin[altura][largura]);
-void difusao(int altura, int largura, Pixel pin[altura][largura],
-             Pixel pout[altura][largura]);
-void difusao_inversa(int altura, int largura, Pixel pout[altura][largura],
-                     Pixel pin[altura][largura]);
+void confusao(int altura, int largura, Pixel pin[altura][largura], Pixel pout[altura][largura]);
+void confusao_inversa(int altura, int largura, Pixel pout[altura][largura], Pixel pin[altura][largura]);
+void difusao(int k, int altura, int largura, Pixel pin[altura][largura], Pixel pout[altura][largura]);
+void difusao_inversa(int k, int altura, int largura, Pixel pout[altura][largura], Pixel pin[altura][largura]);
 
 /* Confusao: soma esta chave em cada byte. A volta e subtrair a mesma chave. */
 
@@ -87,14 +83,18 @@ int main(int argc, char* argv[]) {
   Pixel(*pin)[in.width] = (Pixel(*)[in.height])in.pixels;
   Pixel(*pout)[in.width] = (Pixel(*)[in.height])out.pixels;
 
+  //Define constante de forma aleatória
+  srand(time(NULL));
+  int k = rand();
+  
   confusao(in.height, in.width, pin, pout);
 
-  difusao(in.height, in.width, pout, pin);
+  difusao(k, in.height, in.width, pout, pin);
 
   stbi_write_png("criptografada.png",
                  in.width, in.height, 3, pin, 0);
 
-  difusao_inversa(in.height, in.width, pin, pout);
+  difusao_inversa(k, in.height, in.width, pin, pout);
 
   stbi_write_png("semdifusao.png",
                  in.width, in.height, 3, pout, 0);
@@ -136,20 +136,18 @@ void confusao_inversa(int altura, int largura, Pixel pout[altura][largura], Pixe
   }
 }
 
-void difusao(int altura, int largura, Pixel pin[altura][largura], Pixel pout[altura][largura]) {
-  int d = 100;
+void difusao(int k, int altura, int largura, Pixel pin[altura][largura], Pixel pout[altura][largura]) {
   for (int i = 0; i < altura; i++) {
     for (int j = 0; j < largura; j++) {
-      pout[i][(j + d*i) % largura] = pin[i][j];
+      pout[i][(j + k*i) % largura] = pin[i][j];
     }
   }
 }
 
-void difusao_inversa(int altura, int largura, Pixel pout[altura][largura], Pixel pin[altura][largura]) {
-  int d = 100;
+void difusao_inversa(int k, int altura, int largura, Pixel pout[altura][largura], Pixel pin[altura][largura]) {
   for (int i = 0; i < altura; i++) {
     for (int j = 0; j < largura; j++) {
-      pin[i][j] = pout[i][(j + d*i) % largura];
+      pin[i][j] = pout[i][(j + k*i) % largura];
     }
   }
 }
