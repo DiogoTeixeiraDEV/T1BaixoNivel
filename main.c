@@ -141,18 +141,30 @@ void confusao_inversa(int altura, int largura, Pixel pout[altura][largura],
 
 void difusao(int altura, int largura, Pixel pin[altura][largura],
              Pixel pout[altura][largura]) {
+  int ultPar = (largura - 1) - ((largura - 1)%2);
   for (int i = 0; i < altura; i++) {
     for (int j = 0; j < largura; j++) {
-      pout[altura-i][largura-j] = pin[i][j];
+      if(j%2==0){
+        pout[altura-1-i][ultPar-j] = pin[i][j];
+      }
+      else{
+        pout[i][j] = pin[i][j];
+      }
     }
   }
 }
 
 void difusao_inversa(int altura, int largura, Pixel pout[altura][largura],
                      Pixel pin[altura][largura]) {
+  int ultPar = (largura - 1) - ((largura - 1)%2);
   for (int i = 0; i < altura; i++) {
     for (int j = 0; j < largura; j++) {
-      pin[i][j] = pout[altura-i][largura-j];
+      if(j%2==0){
+        pin[i][j] = pout[altura-1-i][ultPar-j];
+      }
+      else{
+        pin[i][j] = pout[i][j];
+      }
     }
   }
 }
