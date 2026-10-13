@@ -143,12 +143,7 @@ void difusao(int altura, int largura, Pixel pin[altura][largura],
              Pixel pout[altura][largura]) {
   for (int i = 0; i < altura; i++) {
     for (int j = 0; j < largura; j++) {
-      if(j % 2 == 0 && i % 2 == 0){//Se altura e largura são pares, inverte pela vertical
-        pout[i][j] = pin[altura - i][j];
-      }
-      if(j % 2 == 1 && i % 2 == 1){//Se altura e largura são ímpares, inverte pela horizontal
-        pout[i][j] = pin[i][largura - j];
-      }
+      pout[altura-i][largura-j] = pin[i][j];
     }
   }
 }
@@ -157,12 +152,7 @@ void difusao_inversa(int altura, int largura, Pixel pout[altura][largura],
                      Pixel pin[altura][largura]) {
   for (int i = 0; i < altura; i++) {
     for (int j = 0; j < largura; j++) {
-      if(j % 2 == 0 && i % 2 == 0){//Se altura e largura são pares, reverte pela vertical 
-        pin[i][j] = pout[altura - i][j];
-      }
-      if(j % 2 == 1 && i % 2 == 1){//Se altura e largura são ímpares, reverte pela horizontal 
-        pin[i][j] = pout[i][largura - j];
-      }
+      pin[i][j] = pout[altura-i][largura-j];
     }
   }
 }
