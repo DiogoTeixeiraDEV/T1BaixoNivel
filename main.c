@@ -120,8 +120,7 @@ void desconfundir_pixel(Pixel* pin, Pixel* pout) {
   pout->b = pin->g;
 }
 
-void confusao(int altura, int largura, Pixel pin[altura][largura],
-              Pixel pout[altura][largura]) {
+void confusao(int altura, int largura, Pixel pin[altura][largura], Pixel pout[altura][largura]) {
   for (int i = 0; i < altura; i++) {
     for (int j = 0; j < largura; j++) {
       confundir_pixel(&pin[i][j], &pout[i][j]);
@@ -129,8 +128,7 @@ void confusao(int altura, int largura, Pixel pin[altura][largura],
   }
 }
 
-void confusao_inversa(int altura, int largura, Pixel pout[altura][largura],
-                      Pixel pin[altura][largura]) {
+void confusao_inversa(int altura, int largura, Pixel pout[altura][largura], Pixel pin[altura][largura]) {
   for (int i = 0; i < altura; i++) {
     for (int j = 0; j < largura; j++) {
       desconfundir_pixel(&pout[i][j], &pin[i][j]);
@@ -138,21 +136,20 @@ void confusao_inversa(int altura, int largura, Pixel pout[altura][largura],
   }
 }
 
-
-void difusao(int altura, int largura, Pixel pin[altura][largura],
-             Pixel pout[altura][largura]) {
+void difusao(int altura, int largura, Pixel pin[altura][largura], Pixel pout[altura][largura]) {
+  int d = 100;
   for (int i = 0; i < altura; i++) {
     for (int j = 0; j < largura; j++) {
-      pout[i][(j + i) % largura] = pin[i][j];
+      pout[i][(j + d*i) % largura] = pin[i][j];
     }
   }
 }
 
-void difusao_inversa(int altura, int largura, Pixel pout[altura][largura],
-                     Pixel pin[altura][largura]) {
+void difusao_inversa(int altura, int largura, Pixel pout[altura][largura], Pixel pin[altura][largura]) {
+  int d = 100;
   for (int i = 0; i < altura; i++) {
     for (int j = 0; j < largura; j++) {
-      pin[i][j] = pout[i][(j + i) % largura];
+      pin[i][j] = pout[i][(j + d*i) % largura];
     }
   }
 }
