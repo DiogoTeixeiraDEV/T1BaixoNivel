@@ -48,8 +48,8 @@ Img in, out;
 
 // Protótipos
 void load(char* name, Img* pic);
-void confusao(int altura, int largura, Pixel pin[altura][largura], Pixel pout[altura][largura]);
-void confusao_inversa(int altura, int largura, Pixel pout[altura][largura], Pixel pin[altura][largura]);
+void confusao(int k, int altura, int largura, Pixel pin[altura][largura], Pixel pout[altura][largura]);
+void confusao_inversa(int k, int altura, int largura, Pixel pout[altura][largura], Pixel pin[altura][largura]);
 void difusao(int k, int altura, int largura, Pixel pin[altura][largura], Pixel pout[altura][largura]);
 void difusao_inversa(int k, int altura, int largura, Pixel pout[altura][largura], Pixel pin[altura][largura]);
 
@@ -85,21 +85,22 @@ int main(int argc, char* argv[]) {
 
   //Define constante de forma aleatória
   srand(time(NULL));
-  int k = rand();
+  int k1 = rand();
+  int k2 = rand();
   
-  confusao(in.height, in.width, pin, pout);
+  confusao(k1, in.height, in.width, pin, pout);
 
-  difusao(k, in.height, in.width, pout, pin);
+  difusao(k2, in.height, in.width, pout, pin);
 
   stbi_write_png("criptografada.png",
                  in.width, in.height, 3, pin, 0);
 
-  difusao_inversa(k, in.height, in.width, pin, pout);
+  difusao_inversa(k2, in.height, in.width, pin, pout);
 
   stbi_write_png("semdifusao.png",
                  in.width, in.height, 3, pout, 0);
 
-  confusao_inversa(in.height, in.width, pout, pin);
+  confusao_inversa(k1, in.height, in.width, pout, pin);
 
   stbi_write_png("recuperada.png",
                  in.width, in.height, 3, pin, 0);
@@ -108,30 +109,30 @@ int main(int argc, char* argv[]) {
   free(out.pixels);
 }
 
-void confundir_pixel(Pixel* pin, Pixel* pout) {
-  pout->r = pin->g ;
-  pout->g = pin->b ;
-  pout->b = pin->r ;
+void confundir_pixel(int k, Pixel* pin, Pixel* pout) {
+  pout->r = pin->r-k;
+  pout->g = pin->g-k;
+  pout->b = pin->b-k;
 }
 
-void desconfundir_pixel(Pixel* pin, Pixel* pout) {
-  pout->r = pin->b;
-  pout->g = pin->r;
-  pout->b = pin->g;
+void desconfundir_pixel(int k, Pixel* pin, Pixel* pout) {
+  pout->r = pin->r+k;
+  pout->g = pin->g+k;
+  pout->b = pin->b+k;
 }
 
-void confusao(int altura, int largura, Pixel pin[altura][largura], Pixel pout[altura][largura]) {
+void confusao(int k, int altura, int largura, Pixel pin[altura][largura], Pixel pout[altura][largura]) {
   for (int i = 0; i < altura; i++) {
     for (int j = 0; j < largura; j++) {
-      confundir_pixel(&pin[i][j], &pout[i][j]);
+      confundir_pixel(k, &pin[i][j], &pout[i][j]);
     }
   }
 }
 
-void confusao_inversa(int altura, int largura, Pixel pout[altura][largura], Pixel pin[altura][largura]) {
+void confusao_inversa(int k, int altura, int largura, Pixel pout[altura][largura], Pixel pin[altura][largura]) {
   for (int i = 0; i < altura; i++) {
     for (int j = 0; j < largura; j++) {
-      desconfundir_pixel(&pout[i][j], &pin[i][j]);
+      desconfundir_pixel(k, &pout[i][j], &pin[i][j]);
     }
   }
 }
