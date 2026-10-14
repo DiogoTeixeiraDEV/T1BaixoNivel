@@ -83,10 +83,11 @@ int main(int argc, char* argv[]) {
   Pixel(*pin)[in.width] = (Pixel(*)[in.height])in.pixels;
   Pixel(*pout)[in.width] = (Pixel(*)[in.height])out.pixels;
 
-  //Define constante de forma aleatória
+  // Chaves pequenas: a cor anda no maximo 255, a coluna anda menos que a largura.
   srand(time(NULL));
-  int k1 = rand();
-  int k2 = rand();
+  int k1 = rand() % 256;
+  int k2 = rand() % in.width;
+  if (k2 == 0) k2 = 1;
   
   confusao(k1, in.height, in.width, pin, pout);
 
@@ -140,7 +141,7 @@ void confusao_inversa(int k, int altura, int largura, Pixel pout[altura][largura
 void difusao(int k, int altura, int largura, Pixel pin[altura][largura], Pixel pout[altura][largura]) {
   for (int i = 0; i < altura; i++) {
     for (int j = 0; j < largura; j++) {
-      pout[i][(j + k*i) % largura] = pin[i][j];
+      pout[i][(j + k * i) % largura] = pin[i][j];
     }
   }
 }
@@ -148,7 +149,7 @@ void difusao(int k, int altura, int largura, Pixel pin[altura][largura], Pixel p
 void difusao_inversa(int k, int altura, int largura, Pixel pout[altura][largura], Pixel pin[altura][largura]) {
   for (int i = 0; i < altura; i++) {
     for (int j = 0; j < largura; j++) {
-      pin[i][j] = pout[i][(j + k*i) % largura];
+      pin[i][j] = pout[i][(j + k * i) % largura];
     }
   }
 }
